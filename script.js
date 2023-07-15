@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var topic = '/kiotel/sb/' + imei;
         var message = amount + '#' + language + '#';
 
-        var client = new Paho.MQTT.Client('broker.emqx.io', 8083, 'clientId');
+        var client = new Paho.MQTT.Client('wss://broker.emqx.io:8084/mqtt', 'clientId');
 
         client.onConnectionLost = function (responseObject) {
             console.log('Connection lost: ' + responseObject.errorMessage);
