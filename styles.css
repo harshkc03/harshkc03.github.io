@@ -1,0 +1,30 @@
+body {
+    background-image: url('bg1.png'); /* Replace with your first background image URL */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    transition: background-image 0.5s ease-in-out;
+}
+
+.container {
+    text-align: center;
+}
+
+#yes-btn, #no-btn {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#response {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: green;
+}
