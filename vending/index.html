@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            width: 100%;
+            padding: 20px;
+            background-color: #0078d4;
+            color: white;
+            font-size: 24px;
+            text-align: left;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .content {
+            margin-top: 50px;
+            text-align: center;
+            width: 80%;
+        }
+        .box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: inline-block;
+            width: 100%;
+        }
+        .box h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #555;
+        }
+        .box .value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #0078d4;
+        }
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #0078d4;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>Dashboard</header>
+    <div class="content">
+        <div class="box">
+            <h2>Total Dispensed Pads</h2>
+            <div class="value" id="dispensedPads">0</div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Machine Name</th>
+                    <th>Location</th>
+                    <th>Date/Time</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+                <!-- Dynamic rows will be added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+        // Initialize storage for count and history
+        function initializeStorage() {
+            if (!localStorage.getItem('dispensedPads')) {
+                localStorage.setItem('dispensedPads', '0');
+            }
+            if (!localStorage.getItem('dataHistory')) {
+                localStorage.setItem('dataHistory', JSON.stringify([]));
+            }
+        }
+
+        // Update and save the count in localStorage
+        function updateCount(newCount) {
+            localStorage.setItem('dispensedPads', newCount.toString());
+        }
+
+        // Get the current count from localStorage
+        function getCount() {
+            return parseInt(localStorage.getItem('dispensedPads'), 10);
+        }
+
+        // Display the count on the webpage
+        function displayCount(value) {
+            document.getElementById('dispensedPads').textContent = value;
+        }
+
+        // Update the table with the latest history
+        function updateTable(dataHistory) {
+            const tableBody = document.getElementById('dataTable');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            // Display up to 5 latest records
+            const latestData = dataHistory.slice(-5).reverse();
+            latestData.forEach((entry, index) => {
+                const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${entry.machineName}</td>
+                        <td>${entry.location}</td>
+                        <td>${entry.dateTime}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Add a new entry to the history and save it
+        function addHistoryEntry(dateTime) {
+            const dataHistory = JSON.parse(localStorage.getItem('dataHistory'));
+            dataHistory.push({
+                machineName: 'M-254',
+                location: 'Jaipur, 302020',
+                dateTime: dateTime,
+            });
+            localStorage.setItem('dataHistory', JSON.stringify(dataHistory));
+            updateTable(dataHistory);
+        }
+
+        // MQTT connection details
+        const broker = "wss://broker.emqx.io:8084/mqtt";
+        const clientId = "clientID";
+        const topic = "/pad/machine/123";
+
+        // Initialize localStorage and display initial data
+        initializeStorage();
+        const dispensedPads = getCount();
+        displayCount(dispensedPads);
+        updateTable(JSON.parse(localStorage.getItem('dataHistory')));
+
+        // Connect to the MQTT broker
+        const client = mqtt.connect(broker, { clientId });
+
+        client.on('connect', () => {
+            console.log('Connected to MQTT broker');
+            client.subscribe(topic, (err) => {
+                if (err) {
+                    console.error('Subscription error:', err);
+                } else {
+                    console.log('Subscribed to topic:', topic);
+                }
+            });
+        });
+
+        // Handle incoming messages and update count and history
+        client.on('message', (topicReceived, message) => {
+            if (topicReceived === topic) {
+                const newCount = getCount() + 1;
+                updateCount(newCount);
+                displayCount(newCount);
+
+                // Add new entry to the history
+                const now = new Date().toLocaleString();
+                addHistoryEntry(now);
+            }
+        });
+
+        // Handle MQTT connection errors
+        client.on('error', (error) => {
+            console.error('MQTT Error:', error);
+        });
+    </script>
+</body>
+</html>
