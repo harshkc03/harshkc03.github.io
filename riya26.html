@@ -1,797 +1,215 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Wanderly Travels | Explore More, Worry Less</title>
-  <meta name="description" content="Discover unforgettable holidays, curated travel packages, weekend getaways and customized trips with Wanderly Travels.">
-
-  <meta name="theme-color" content="#123c35">
-
-  <style>
-    :root {
-      --primary: #123c35;
-      --secondary: #d9eddf;
-      --accent: #e9a95b;
-      --text: #24352f;
-      --muted: #718078;
-      --background: #fbfaf6;
-      --white: #ffffff;
-      --radius: 18px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--background);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    img {
-      width: 100%;
-      display: block;
-      object-fit: cover;
-    }
-
-    .container {
-      width: min(1100px, 90%);
-      margin: auto;
-    }
-
-    /* NAVIGATION */
-
-    header {
-      background: var(--white);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 15px #00000008;
-    }
-
-    nav {
-      min-height: 70px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 23px;
-      font-weight: 800;
-      color: var(--primary);
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 25px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .nav-links a:hover {
-      color: #b77c36;
-    }
-
-    .menu-btn {
-      display: none;
-      border: 0;
-      background: none;
-      font-size: 27px;
-      cursor: pointer;
-      color: var(--primary);
-    }
-
-    /* HERO */
-
-    .hero {
-      min-height: 570px;
-      display: flex;
-      align-items: center;
-      background:
-        linear-gradient(90deg, #092d29d9, #092d2920),
-        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1800")
-        center/cover;
-      color: white;
-    }
-
-    .hero-content {
-      max-width: 650px;
-      padding: 90px 0;
-    }
-
-    .eyebrow {
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-    }
-
-    .hero h1 {
-      font-size: clamp(40px, 7vw, 68px);
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 17px;
-      color: #f0f2ee;
-      max-width: 500px;
-      margin-bottom: 30px;
-    }
-
-    .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: #25352d;
-      padding: 14px 25px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 14px;
-      transition: .2s;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      background: #f5bd78;
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: white;
-      border: 1px solid white;
-      margin-left: 10px;
-    }
-
-    /* SECTION COMMON */
-
-    section {
-      padding: 75px 0;
-    }
-
-    .section-heading {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .section-heading h2 {
-      color: var(--primary);
-      font-size: clamp(27px, 4vw, 38px);
-      margin-bottom: 10px;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    /* DESTINATIONS */
-
-    .destination-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .destination-card {
-      height: 300px;
-      border-radius: var(--radius);
-      overflow: hidden;
-      position: relative;
-      color: white;
-    }
-
-    .destination-card img {
-      height: 100%;
-      transition: transform .5s;
-    }
-
-    .destination-card:hover img {
-      transform: scale(1.08);
-    }
-
-    .destination-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(transparent 35%, #000b);
-    }
-
-    .destination-info {
-      position: absolute;
-      z-index: 1;
-      bottom: 22px;
-      left: 22px;
-    }
-
-    .destination-info h3 {
-      font-size: 25px;
-    }
-
-    .destination-info p {
-      font-size: 13px;
-    }
-
-    /* PACKAGES */
-
-    .packages {
-      background: #f0f5ef;
-    }
-
-    .package-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .package-card {
-      background: white;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 5px 25px #00000008;
-    }
-
-    .package-card img {
-      height: 205px;
-    }
-
-    .package-content {
-      padding: 22px;
-    }
-
-    .tag {
-      display: inline-block;
-      background: var(--secondary);
-      color: var(--primary);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .package-content h3 {
-      font-size: 21px;
-      color: var(--primary);
-      margin-bottom: 8px;
-    }
-
-    .package-content p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 17px;
-    }
-
-    .package-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .price {
-      color: var(--primary);
-      font-weight: 800;
-      font-size: 18px;
-    }
-
-    .price small {
-      display: block;
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 400;
-    }
-
-    .small-btn {
-      background: var(--primary);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 30px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    /* WHY CHOOSE US */
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      text-align: center;
-    }
-
-    .feature {
-      padding: 25px 15px;
-    }
-
-    .feature-icon {
-      font-size: 35px;
-      margin-bottom: 12px;
-    }
-
-    .feature h3 {
-      color: var(--primary);
-      font-size: 17px;
-      margin-bottom: 8px;
-    }
-
-    .feature p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    /* CTA */
-
-    .cta {
-      background: var(--primary);
-      color: white;
-      text-align: center;
-      padding: 65px 20px;
-      border-radius: 25px;
-    }
-
-    .cta h2 {
-      font-size: clamp(27px, 4vw, 40px);
-      margin-bottom: 12px;
-    }
-
-    .cta p {
-      color: #d6e2dc;
-      margin-bottom: 25px;
-    }
-
-    /* FOOTER */
-
-    footer {
-      background: #0b2925;
-      color: white;
-      padding: 50px 0 20px;
-      margin-top: 75px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 35px;
-      margin-bottom: 35px;
-    }
-
-    footer h3 {
-      margin-bottom: 15px;
-    }
-
-    footer p, footer a {
-      font-size: 13px;
-      color: #c0d0c9;
-    }
-
-    footer a {
-      display: block;
-      margin-bottom: 9px;
-    }
-
-    .copyright {
-      border-top: 1px solid #ffffff20;
-      padding-top: 20px;
-      text-align: center;
-      color: #a9beb5;
-      font-size: 12px;
-    }
-
-    /* WHATSAPP FLOAT */
-
-    .whatsapp {
-      position: fixed;
-      bottom: 22px;
-      right: 20px;
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      background: #25d366;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 27px;
-      z-index: 99;
-      box-shadow: 0 4px 15px #0003;
-    }
-
-    /* RESPONSIVE */
-
-    @media(max-width: 768px) {
-      .menu-btn {
-        display: block;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        background: white;
-        flex-direction: column;
-        padding: 25px;
-        gap: 20px;
-        box-shadow: 0 10px 15px #00000010;
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
-
-      .hero {
-        min-height: 540px;
-        background-position: 60% center;
-      }
-
-      .hero-content {
-        padding: 70px 0;
-      }
-
-      .hero p {
-        font-size: 15px;
-      }
-
-      .btn-outline {
-        margin: 12px 0 0;
-      }
-
-      section {
-        padding: 55px 0;
-      }
-
-      .destination-grid,
-      .package-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-      }
-
-      .destination-card {
-        height: 230px;
-      }
-
-      .package-card img {
-        height: 155px;
-      }
-
-      .package-content {
-        padding: 15px;
-      }
-
-      .package-content h3 {
-        font-size: 17px;
-      }
-
-      .features-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media(max-width: 480px) {
-      .container {
-        width: 90%;
-      }
-
-      .hero {
-        min-height: 500px;
-      }
-
-      .hero h1 {
-        font-size: 43px;
-      }
-
-      .destination-grid,
-      .package-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .destination-card {
-        height: 260px;
-      }
-
-      .package-card img {
-        height: 210px;
-      }
-
-      .features-grid {
-        gap: 5px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 25px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fff5fa">
+<meta name="description" content="A little birthday love letter for Riya, celebrating 26 beautiful years.">
+<title>For Riya, with love ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#f4cddd;--rose:#c9789b;--deep:#68465f;--lav:#e9e2fa;--ink:#59485a;--cream:#fffafc;--white:#fff;--line:#efdce7;--shadow:0 16px 45px #9b6b8618}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.7;overflow-x:hidden}
+img{display:block;width:100%;height:100%;object-fit:cover}
+button{font:inherit}.wrap{width:min(100% - 38px,680px);margin:auto}
+.kicker{font-size:.72rem;letter-spacing:.19em;text-transform:uppercase;color:var(--rose);font-weight:700}
+h1,h2,h3{font-family:"Playfair Display",serif;font-weight:600;line-height:1.15;color:var(--deep)}
+h2{font-size:clamp(2rem,8vw,3rem);margin:.55rem 0 1rem}
+p{margin:.5rem 0 0}.script{font-family:"Caveat",cursive;color:var(--rose)}
+.hero{min-height:94svh;display:flex;align-items:center;text-align:center;padding:58px 0 48px;position:relative;isolation:isolate;background:radial-gradient(ellipse at 10% 15%,#f8e3ed 0,transparent 38%),radial-gradient(ellipse at 95% 80%,#e9e3fa 0,transparent 42%),linear-gradient(145deg,#fff9fc,#fff2f7)}
+.hero:before,.hero:after{content:"♡";position:absolute;color:#dba6bf;opacity:.42;font-size:4rem;z-index:-1}.hero:before{top:9%;left:7%;transform:rotate(-18deg)}.hero:after{right:8%;bottom:12%;font-size:5rem;transform:rotate(15deg)}
+.hero-photo{width:min(76vw,340px);aspect-ratio:4/5;margin:0 auto 27px;padding:9px;background:white;border-radius:190px 190px 24px 24px;box-shadow:var(--shadow);transform:rotate(-2deg)}
+.hero-photo img{border-radius:180px 180px 18px 18px}
+.hero h1{font-size:clamp(3.2rem,14vw,5.6rem);margin:.25rem 0;color:#9b5d7e;letter-spacing:-.045em}
+.hero .sub{font-family:"Playfair Display",serif;font-style:italic;font-size:1.1rem;color:#87677d;max-width:330px;margin:12px auto 24px}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 17px;border:1px solid #e8c8d8;border-radius:99px;background:#ffffffb8;color:#8d5a78;font-size:.82rem}
+.btn{border:0;border-radius:99px;padding:14px 23px;background:var(--rose);color:white;font-weight:700;box-shadow:0 8px 20px #c9789b35;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:active{transform:scale(.97)}.btn.secondary{background:#eee7fb;color:#755d89;box-shadow:none}
+.scroll-note{margin-top:30px;font-size:.75rem;color:#a78b9c;letter-spacing:.1em}
+section{padding:76px 0;position:relative}.center{text-align:center}
+.intro{background:linear-gradient(180deg,#fffafc,#fff5fa)}
+.intro-card{background:white;border:1px solid var(--line);border-radius:26px;padding:28px 24px;box-shadow:var(--shadow);text-align:center}
+.intro-card .big{font-family:"Playfair Display",serif;font-size:1.35rem;color:#895b79}
+.intro-card p{font-size:.98rem;color:#786878}
+.number{font-family:"Playfair Display",serif;font-size:5.6rem;line-height:1;color:#c47b9d;margin:8px 0}
+.number small{font-family:"Caveat",cursive;font-size:2rem;color:#9e80b6}
+.love-list{display:grid;gap:12px;margin-top:27px;text-align:left}
+.love-item{display:flex;gap:13px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px 16px}
+.love-item span{font-size:1.2rem}.love-item p{margin:0;font-size:.92rem}
+.gallery{background:linear-gradient(180deg,#fbf8ff,#fff9fc)}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:28px}
+.photo-card{background:#fff;padding:8px 8px 14px;border-radius:13px;box-shadow:0 9px 25px #7c587319;transform:rotate(var(--tilt,0deg))}
+.photo-card:nth-child(odd){--tilt:-1.4deg}.photo-card:nth-child(even){--tilt:1.3deg}
+.photo-card img{height:auto;aspect-ratio:4/5;border-radius:7px}
+.photo-card.wide{grid-column:span 2}.photo-card.wide img{aspect-ratio:16/10}
+.photo-card figcaption{font-family:"Caveat",cursive;text-align:center;color:#956c89;font-size:1.15rem;padding-top:8px}
+.memory-note{font-size:.88rem;color:#8a7888;max-width:420px;margin:18px auto 0}
+.wishes{background:#fff5f9}
+.wish-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:25px}
+.wish{border-radius:20px;padding:18px 14px;background:linear-gradient(145deg,#fff,#f9edf5);border:1px solid #f0dce8;text-align:center;min-height:120px}
+.wish:nth-child(2n){background:linear-gradient(145deg,#fff,#f0ebfb);border-color:#e6def4}
+.wish .emoji{font-size:1.5rem}.wish p{font-size:.88rem;margin-top:8px}
+.letter-section{background:linear-gradient(145deg,#f0eafa,#fff4f8)}
+.envelope{margin:28px auto 0;max-width:440px;background:#fff;border:1px solid #e8d9ee;border-radius:22px;padding:26px 22px;box-shadow:var(--shadow);text-align:center}
+.envelope-icon{font-size:3rem}.letter{display:none;text-align:left;margin-top:20px;padding:22px 18px;background:#fffafc;border-radius:14px;border:1px dashed #dfbfd1;font-family:"Playfair Display",serif;line-height:1.9}
+.letter.open{display:block;animation:fade .7s ease}.letter .sign{font-family:"Caveat",cursive;font-size:1.8rem;color:#b56e91;margin-top:15px}
+.cake-section{text-align:center;background:#fffafc}
+.cake{font-size:5.2rem;filter:drop-shadow(0 8px 12px #d39ab344);margin:18px 0}
+.final{min-height:80svh;display:flex;align-items:center;text-align:center;background:radial-gradient(ellipse at center,#f5e9fb,#fff3f8 65%,#fffafc);overflow:hidden}
+.final h2{font-size:clamp(2.3rem,10vw,4rem)}
+.final-photo{width:min(78vw,360px);aspect-ratio:4/5;margin:25px auto;border:9px solid white;border-radius:22px;box-shadow:var(--shadow);transform:rotate(1deg)}
+.final-message{font-family:"Playfair Display",serif;font-style:italic;font-size:1.08rem;max-width:440px;margin:0 auto}
+footer{text-align:center;padding:28px 15px 42px;color:#a48c9e;font-size:.78rem}
+footer .heart{color:#c9789b}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}.heart-float{position:absolute;bottom:-30px;animation:floatUp 3.8s ease-in forwards;opacity:.9}
+@keyframes floatUp{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(min-width:600px){section{padding:95px 0}.gallery-grid{gap:18px}.photo-card img{aspect-ratio:5/4}.photo-card.wide img{aspect-ratio:16/9}.hero-photo{width:300px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
 </head>
-
 <body>
+<div class="hearts" id="hearts" aria-hidden="true"></div>
 
-<header>
-  <nav class="container">
-    <a href="#" class="logo">Wanderly<span>.</span></a>
-
-    <button class="menu-btn" id="menuBtn"
-      aria-label="Toggle navigation"
-      aria-expanded="false">☰</button>
-
-    <div class="nav-links" id="navLinks">
-      <a href="#home">Home</a>
-      <a href="#destinations">Destinations</a>
-      <a href="#packages">Packages</a>
-      <a href="#about">Why Us</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-photo"><img src="assets/01-heart-frame.jpg" alt="A photo of us looking through a heart-shaped opening in the sand"></div>
+    <div class="kicker">A tiny birthday corner of the internet</div>
+    <h1>Riyaaaa ♡</h1>
+    <p class="sub">Someone very special is turning twenty-six...</p>
+    <div class="pill">✿ made with a whole lot of love ✿</div>
+    <div style="margin-top:25px"><a class="btn" href="#birthday" style="text-decoration:none;display:inline-block">Open your little surprise ↓</a></div>
+    <div class="scroll-note">SCROLL A LITTLE, BIRTHDAY GIRL</div>
+  </div>
 </header>
 
 <main>
-
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="container">
-      <div class="hero-content">
-        <div class="eyebrow">Your journey begins here</div>
-
-        <h1>Explore More.<br>Worry Less.</h1>
-
-        <p>
-          Discover beautiful destinations, unforgettable experiences
-          and thoughtfully planned holidays. Your next adventure
-          is just one booking away.
-        </p>
-
-        <a href="#packages" class="btn">Explore Packages →</a>
-        <a href="#contact" class="btn btn-outline">Plan My Trip</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- DESTINATIONS -->
-  <section id="destinations">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">Where to next?</div>
-        <h2>Explore Popular Destinations</h2>
-        <p>Find your perfect escape from the everyday.</p>
-      </div>
-
-      <div class="destination-grid">
-
-        <div class="destination-card">
-          <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=700"
-               alt="Goa beach">
-          <div class="destination-info">
-            <h3>Goa</h3>
-            <p>Beaches, sunsets & nightlife</p>
-          </div>
-        </div>
-
-        <div class="destination-card">
-          <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=700"
-               alt="Bali tropical landscape">
-          <div class="destination-info">
-            <h3>Bali</h3>
-            <p>Tropical paradise & culture</p>
-          </div>
-        </div>
-
-        <div class="destination-card">
-          <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=700"
-               alt="Thailand island">
-          <div class="destination-info">
-            <h3>Thailand</h3>
-            <p>Island adventures & experiences</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- PACKAGES -->
-  <section class="packages" id="packages">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">Handpicked experiences</div>
-        <h2>Our Travel Packages</h2>
-        <p>Curated trips designed around your kind of adventure.</p>
-      </div>
-
-      <div class="package-grid">
-
-        <div class="package-card">
-          <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=700"
-               alt="Goa holiday">
-          <div class="package-content">
-            <span class="tag">Beach Escape</span>
-            <h3>Goa Getaway</h3>
-            <p>Enjoy beaches, local cuisine, water sports and nightlife.</p>
-            <div class="package-bottom">
-              <div class="price">₹8,999<small>Per person*</small></div>
-              <a href="#contact" class="small-btn">Enquire</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="package-card">
-          <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700"
-               alt="Bali holiday">
-          <div class="package-content">
-            <span class="tag">International</span>
-            <h3>Bali Explorer</h3>
-            <p>Explore scenic temples, waterfalls and beautiful villas.</p>
-            <div class="package-bottom">
-              <div class="price">₹34,999<small>Per person*</small></div>
-              <a href="#contact" class="small-btn">Enquire</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="package-card">
-          <img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=700"
-               alt="Himachal mountains">
-          <div class="package-content">
-            <span class="tag">Mountain Escape</span>
-            <h3>Himachal Retreat</h3>
-            <p>Discover mountains, cosy stays and breathtaking views.</p>
-            <div class="package-bottom">
-              <div class="price">₹12,499<small>Per person*</small></div>
-              <a href="#contact" class="small-btn">Enquire</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- WHY US -->
-  <section id="about">
-    <div class="container">
-      <div class="section-heading">
-        <div class="eyebrow">Travel with confidence</div>
-        <h2>Why Travel With Us?</h2>
-        <p>We take care of the details. You make the memories.</p>
-      </div>
-
-      <div class="features-grid">
-
-        <div class="feature">
-          <div class="feature-icon">✈️</div>
-          <h3>Curated Trips</h3>
-          <p>Thoughtfully designed travel experiences.</p>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon">💰</div>
-          <h3>Best Value</h3>
-          <p>Packages to suit different budgets.</p>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon">🤝</div>
-          <h3>Personal Support</h3>
-          <p>Assistance throughout your journey.</p>
-        </div>
-
-        <div class="feature">
-          <div class="feature-icon">🌍</div>
-          <h3>Custom Holidays</h3>
-          <p>Trips tailored to your preferences.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="container" id="contact">
-    <div class="cta">
-      <h2>Let's Plan Your Next Adventure!</h2>
-      <p>Tell us where you want to go. We'll help you get there.</p>
-
-      <a href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20plan%20a%20trip."
-         class="btn" target="_blank" rel="noopener">
-        Chat With Us on WhatsApp →
-      </a>
-    </div>
-  </section>
-
-</main>
-
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-
-      <div>
-        <h3>Wanderly Travels.</h3>
-        <p>
-          Making every journey meaningful.
-          Discover the world with travel experiences
-          designed around you.
-        </p>
-      </div>
-
-      <div>
-        <h3>Explore</h3>
-        <a href="#destinations">Destinations</a>
-        <a href="#packages">Packages</a>
-        <a href="#about">About Us</a>
-      </div>
-
-      <div>
-        <h3>Contact</h3>
-        <a href="mailto:hello@wanderly.com">hello@wanderly.com</a>
-        <a href="tel:+919876543210">+91 98765 43210</a>
-        <a href="https://wa.me/919876543210">WhatsApp</a>
-      </div>
-
-    </div>
-
-    <div class="copyright">
-      © 2026 Wanderly Travels. All rights reserved.
-    </div>
+<section class="intro" id="birthday">
+ <div class="wrap center reveal">
+  <div class="kicker">Today is all about you</div>
+  <h2>Happy 26th Birthday,<br><em>my Riya.</em></h2>
+  <div class="number">26<small> & counting ♡</small></div>
+  <div class="intro-card">
+   <p class="big">I hope this year is as lovely as you make my world feel.</p>
+   <p>More laughter, more little adventures, more reasons to smile, and all the beautiful things your heart has been wishing for. You deserve every bit of happiness coming your way.</p>
   </div>
-</footer>
+ </div>
+</section>
 
-<!-- FLOATING WHATSAPP -->
-<a href="https://wa.me/919876543210"
-   class="whatsapp"
-   target="_blank"
-   rel="noopener"
-   aria-label="Chat with us on WhatsApp">
-  ☎
-</a>
+<section>
+ <div class="wrap reveal">
+  <div class="center"><div class="kicker">A few things, out of a million</div><h2>Things I adore about you</h2><p>Some of my favourite things about my favourite person.</p></div>
+  <div class="love-list">
+   <div class="love-item"><span>♡</span><p>Your smile. It has this unfair little superpower of making an ordinary day feel special.</p></div>
+   <div class="love-item"><span>✿</span><p>The way you can be effortlessly cute without even trying.</p></div>
+   <div class="love-item"><span>☁️</span><p>Your presence — how even the simplest moments feel like memories worth keeping.</p></div>
+   <div class="love-item"><span>✨</span><p>The person you are, and all the little things that make you wonderfully, unmistakably you.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="gallery">
+ <div class="wrap reveal">
+  <div class="center"><div class="kicker">Our little universe</div><h2>Some moments I'd keep forever</h2><p>A tiny scrapbook of us. And definitely not enough pages.</p></div>
+  <div class="gallery-grid">
+   <figure class="photo-card wide"><img src="assets/03-kiss.jpg" alt="A sweet kiss and smile together"><figcaption>Proof that I'm the lucky one ♡</figcaption></figure>
+   <figure class="photo-card"><img src="assets/02-riya-portrait.jpg" alt="Riya smiling"><figcaption>My pretty girl</figcaption></figure>
+   <figure class="photo-card"><img src="assets/04-cozy-selfie.jpg" alt="A close, cosy selfie together"><figcaption>Close is my favourite place</figcaption></figure>
+   <figure class="photo-card wide"><img src="assets/06-waterfall.jpg" alt="A happy moment together by a waterfall"><figcaption>Collecting places, keeping moments</figcaption></figure>
+   <figure class="photo-card"><img src="assets/05-roadtrip.jpg" alt="A sunny road trip selfie"><figcaption>Our little adventures</figcaption></figure>
+   <figure class="photo-card"><img src="assets/07-mirror-memory.jpg" alt="A mirror photograph together"><figcaption>Just being us</figcaption></figure>
+   <figure class="photo-card wide"><img src="assets/08-mysore-trip.jpg" alt="A trip together in front of a palace"><figcaption>One more place, one more favourite memory</figcaption></figure>
+   <figure class="photo-card wide"><img src="assets/09-flowers-hug.jpg" alt="A warm hug with flowers"><figcaption>And a thousand more hugs, please</figcaption></figure>
+  </div>
+  <p class="memory-note center">Every photo has a story. My favourite part of all of them is that I get to make these memories with you.</p>
+ </div>
+</section>
+
+<section class="wishes">
+ <div class="wrap reveal">
+  <div class="center"><div class="kicker">A wish for your new chapter</div><h2>May 26 bring you...</h2><p>A little list of all the lovely things I hope find their way to you.</p></div>
+  <div class="wish-grid">
+   <div class="wish"><div class="emoji">🌷</div><p>Gentle days and a heart that feels at peace.</p></div>
+   <div class="wish"><div class="emoji">🌈</div><p>Big wins, brave beginnings and dreams coming true.</p></div>
+   <div class="wish"><div class="emoji">🥂</div><p>Spontaneous plans and stories we'll laugh about later.</p></div>
+   <div class="wish"><div class="emoji">💗</div><p>All the love you give, coming back to you twice over.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="letter-section">
+ <div class="wrap reveal center">
+  <div class="kicker">A little something from me</div><h2>Open when you're ready 💌</h2>
+  <p>Not everything fits into a birthday wish. So here's a little letter.</p>
+  <div class="envelope">
+   <div class="envelope-icon">💌</div>
+   <p class="script" style="font-size:1.7rem;margin:3px 0 17px">To my Riya</p>
+   <button class="btn secondary" id="openLetter" type="button">Unfold your letter</button>
+   <div class="letter" id="letter">
+    My dearest Riya,<br><br>
+    Happy birthday, love. I hope you know how deeply loved and appreciated you are — not just today, but on all the ordinary days in between too. Thank you for the laughs, the silly moments, the adventures, the comfort, and for being you.<br><br>
+    I don't need every day to be extraordinary. Give me the little moments with you: a long drive, a random conversation, a shared smile, a new place to explore, or simply doing nothing together. Those are the moments I want more of.<br><br>
+    Here's to cheering for you, growing with you, making more memories, and finding new reasons to fall for you in all the little ways.<br><br>
+    I hope 26 is kind to you. You deserve the world, birthday girl.<br>
+    <div class="sign">All my love, always ♡</div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="cake-section">
+ <div class="wrap reveal">
+  <div class="kicker">One birthday tradition</div><h2>Make a wish, birthday girl!</h2>
+  <div class="cake" id="cake">🎂</div>
+  <p id="cakeText">26 candles, one very special wish. Tap the button when you're ready.</p>
+  <button class="btn" id="blow" type="button" style="margin-top:20px">Blow out the candles ✨</button>
+ </div>
+</section>
+
+<section class="final">
+ <div class="wrap reveal">
+  <div class="kicker">And finally...</div>
+  <h2>My favourite<br><em>plot twist</em> is you.</h2>
+  <div class="final-photo"><img src="assets/01-heart-frame.jpg" alt="Us together, framed by a heart in the sand"></div>
+  <p class="final-message">Here's to 26, to all the beautiful years still waiting for you, and to all the memories we haven't made yet. I love you, Riya. Happy birthday, sunshine. ♡</p>
+  <p class="script" style="font-size:1.8rem;margin-top:20px">Always your biggest fan.</p>
+ </div>
+</section>
+</main>
+<footer>Made for Riya, with <span class="heart">♥</span> and a ridiculous amount of affection.</footer>
 
 <script>
-  const menuBtn = document.getElementById("menuBtn");
-  const navLinks = document.getElementById("navLinks");
+const revealEls=document.querySelectorAll('.reveal');
+if('IntersectionObserver' in window){
+ const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target)}}),{threshold:.12});
+ revealEls.forEach(el=>observer.observe(el));
+}else{revealEls.forEach(el=>el.classList.add('visible'))}
 
-  menuBtn.addEventListener("click", () => {
-    const isOpen = navLinks.classList.toggle("active");
-    menuBtn.setAttribute("aria-expanded", isOpen);
-    menuBtn.textContent = isOpen ? "✕" : "☰";
-  });
-
-  document.querySelectorAll(".nav-links a").forEach(link => {
-    link.addEventListener("click", () => {
-      navLinks.classList.remove("active");
-      menuBtn.setAttribute("aria-expanded", "false");
-      menuBtn.textContent = "☰";
-    });
-  });
+document.getElementById('openLetter').addEventListener('click',function(){
+ const letter=document.getElementById('letter');
+ letter.classList.toggle('open');
+ this.textContent=letter.classList.contains('open')?'Fold letter back':'Unfold your letter';
+ if(letter.classList.contains('open')) letter.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+function hearts(){
+ const layer=document.getElementById('hearts');
+ const symbols=['♡','♥','✿','✨'];
+ for(let i=0;i<34;i++){
+  const el=document.createElement('span');el.className='heart-float';
+  el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  el.style.left=Math.random()*100+'%';el.style.fontSize=(14+Math.random()*20)+'px';
+  el.style.animationDelay=(Math.random()*.9)+'s';el.style.color=['#c9789b','#b49bd7','#e6a9c2'][i%3];
+  layer.appendChild(el);setTimeout(()=>el.remove(),5000);
+ }
+}
+document.getElementById('blow').addEventListener('click',function(){
+ document.getElementById('cake').textContent='🍰';
+ document.getElementById('cakeText').textContent='Wish made! I hope the universe is listening. 💗';
+ this.textContent='One more birthday hug? ♡';this.disabled=true;hearts();
+});
 </script>
-
 </body>
 </html>
